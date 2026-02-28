@@ -202,6 +202,9 @@ class SlipstreamVpnService : VpnService() {
         try { tunPfd?.close() } catch (_: Throwable) {}
         tunPfd = null
 
+        // Delete tproxy.conf to avoid leaving SOCKS5 credentials on disk
+        try { File(cacheDir, "tproxy.conf").delete() } catch (_: Throwable) {}
+
         try { slipstream?.stopSlipstream() } catch (_: Throwable) {}
         safeUnbind()
 
